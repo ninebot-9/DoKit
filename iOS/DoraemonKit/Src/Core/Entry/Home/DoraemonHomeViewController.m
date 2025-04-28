@@ -147,11 +147,15 @@ static NSString *DoraemonHomeCloseCellID = @"DoraemonHomeCloseCellID";
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
-    DoraemonHomeCell *cell = [self.collectionView dequeueReusableCellWithReuseIdentifier:DoraemonHomeCellID forIndexPath:indexPath];
-    NSInteger row = indexPath.row;
+    
+    /// fix xcode16 & ios18 Crash
+    /** Terminating app due to uncaught exception 'NSInternalInconsistencyException', reason: 'Expected dequeued view to be returned to the collection view in preparation for display. When the collection view's data source is asked to provide a view for a given index path, ensure that a single view is dequeued and returned to the collection view. Avoid dequeuing views without a request from the collection view. For retrieving an existing view in the collection view, use -[UICollectionView cellForItemAtIndexPath:] or -[UICollectionView supplementaryViewForElementKind:atIndexPath:]. Dequeued view: <DoraemonHomeCell: 0x1154c6580; baseClass = UICollectionViewCell; frame = (0 1231.33; 393 52.4); backgroundColor = <UIDynamicSystemColor: 0x105997a00; name = systemBackgroundColor>; layer = <CALayer: 0x13b5b39a0>>; Collection view: <UICollectionView: 0x102e35c00; frame = (0 97.6667; 393 754.333); clipsToBounds = YES; gestureRecognizers = <NSArray: 0x115e9f030>; backgroundColor = <UIDynamicSystemColor: 0x105997a00; name = systemBackgroundColor>; layer = <CALayer: 0x13b573b40>; contentOffset: {0, 410.33333333333331}; contentSize: {393, 1325.5039999999999}; adjustedContentInset: {0, 0, 34, 0}; layout: <UICollectionViewFlowLayout: 0x115ea2f80>; dataSource: <DoraemonHomeViewController: 0x116c32c00>>'
+     */
     NSInteger section = indexPath.section;
     
     if (section < _dataArray.count) {
+        DoraemonHomeCell *cell = [self.collectionView dequeueReusableCellWithReuseIdentifier:DoraemonHomeCellID forIndexPath:indexPath];
+        NSInteger row = indexPath.row;
         NSDictionary *dict = _dataArray[section];
         NSArray *pluginArray = dict[@"pluginArray"];
         NSDictionary *item = pluginArray[row];
