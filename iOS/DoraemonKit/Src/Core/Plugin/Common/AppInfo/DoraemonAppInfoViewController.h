@@ -12,4 +12,6 @@
 /// 自定义App信息处理
 @property (class, nonatomic, copy) void (^customAppInfoBlock)(NSMutableArray<NSDictionary *> *appInfos);
 
+- (void)insertNewMsg:(NSArray<NSDictionary *> *)newMsg;
+
 @end

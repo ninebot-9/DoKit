@@ -21,6 +21,7 @@
 @property (nonatomic, strong) NSArray *dataArray;
 @property (nonatomic, strong) CTCellularData *cellularData API_AVAILABLE(ios(9.0));
 @property (nonatomic, copy) NSString *authority;
+@property (nonatomic, strong) NSArray *insertArray;
 
 @end
 
@@ -241,7 +242,16 @@
                                           ]
                                }
                            ];
-    _dataArray = dataArray;
+    NSMutableArray *oldArray = [[NSMutableArray alloc] initWithArray:dataArray];
+    if (self.insertArray.count > 0) {
+        [oldArray addObjectsFromArray:self.insertArray];
+    }
+    _dataArray = oldArray;
+}
+
+- (void)insertNewMsg:(NSArray<NSDictionary *> *)newMsg {
+    NSLog(@"insertNewMsg%@", newMsg);
+    self.insertArray = newMsg;
 }
 
 #pragma mark - UITableView Delegate
@@ -255,7 +265,7 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return [DoraemonAppInfoCell cellHeight];
+    return [DoraemonAppInfoCell cellHeightWithData:_dataArray[indexPath.section][@"array"][indexPath.row]];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
@@ -316,5 +326,11 @@
     return @[action0];
 }
 
+- (NSArray *)insertArray {
+    if (_insertArray == nil) {
+        _insertArray = [[NSArray alloc] init];
+    }
+    return _insertArray;
+}
 
 @end
